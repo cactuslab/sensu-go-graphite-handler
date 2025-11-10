@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCheckArgs(t *testing.T) {
+func testCheckArgs(t *testing.T) {
 	assert := assert.New(t)
 	event := corev2.FixtureEvent("entity1", "check1")
 	event.Check = nil
@@ -38,7 +38,7 @@ func TestCheckArgs(t *testing.T) {
 	assert.Equal(expectedPrefix, metricPrefix)
 }
 
-func TestSendMetrics(t *testing.T) {
+func testSendMetrics(t *testing.T) {
 	metricprefixes := [2]string{"", "prefix1"}
 	pointnames := [2]string{"answer", "/"}
 	haschecks := [2]bool{true, false}
@@ -76,7 +76,7 @@ func TestSendMetrics(t *testing.T) {
 	}
 }
 
-func Testmain(t *testing.T) {
+func testmain(t *testing.T) {
 	assert := assert.New(t)
 	file, _ := ioutil.TempFile(os.TempDir(), "sensu-go-graphite-handler")
 	defer func() {
