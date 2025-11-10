@@ -48,6 +48,7 @@ Flags:
   -p, --port uint                  the port number to which to connect on the graphite server (default 2003)
   -P, --prefix string              the string to be prepended to each metric in graphite (default "sensu")
   -s, --prefix-source              if true, prepends the sensu entity name (source) as a string to each metric in graphite
+  --no-checks                      if true, don't send check metrics
 ```
 
 ## Configuration

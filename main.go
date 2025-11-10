@@ -18,6 +18,7 @@ type HandlerConfig struct {
 	Port             uint64
 	Host             string
 	NoPrefix         bool
+	NoChecks         bool
 }
 
 const (
@@ -28,6 +29,7 @@ const (
 	port             = "port"
 	host             = "host"
 	noPrefix         = "no-prefix"
+	noChecks         = "no-checks"
 
 	// defaults
 	defaultPrefix           = "sensu"
@@ -96,6 +98,13 @@ var (
 			Default:   false,
 			Usage:     "unsets the default prefix value, use the bare metrics.point.name",
 			Value:     &config.NoPrefix,
+		},
+		{
+			Path:      noChecks,
+			Argument:  noChecks,
+			Default:   false,
+			Usage:     "prevents relaying check metrics",
+			Value:     &config.NoChecks,
 		},
 	}
 )
@@ -166,7 +175,7 @@ func SendMetrics(event *corev2.Event) error {
 		}
 	}
 
-	if event.HasCheck() {
+	if event.HasCheck() && !config.NoChecks {
 		annotationPath := fmt.Sprintf("%s.events.%s.%s", config.AnnotationPrefix, entity, event.Check.Name)
 		metrics = append(metrics, graphite.NewMetric(fmt.Sprintf("%s.action.%s", annotationPath, event.Check.State), "1", event.Timestamp))
 		metrics = append(metrics, graphite.NewMetric(fmt.Sprintf("%s.status", annotationPath), fmt.Sprintf("%d", event.Check.Status), event.Timestamp))
